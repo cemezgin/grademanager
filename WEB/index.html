@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+  <script src="semantic/dist/semantic.min.js"></script>
+<script src="jquery.min.js"></script>
+<script>
+  $(document).ready(function()
+  {
+    $("#signin").on("click", function () {
+      var username = $("#username").val();
+      var password = $("#password").val();
+      var dataString = 'username='+username+'&password='+password;
+      if($.trim(username).length>0) {
+        if ($.trim(password).length > 0) {
+          $.ajax({
+            type: "POST",
+            url: "login.php",
+            data: dataString,
+            cache: false,
+            dataType: "json",
+            beforeSend: function () {
+              $('#signin').addClass('loading');
+            },
+            success: function (data) {
+              if (data["success"] != 1) {
+                $('#signin').removeClass('loading');
+                window.alert("Kullanıcı Adı yada Şifre Hatalı");
+              }
+              else {
+                window.location.href = "index.php";
+              }
+            }
+          });
+        }
+      }
+    });
+  });
+</script>
+
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <!-- Site Properties -->
+  <title>Grade Manager System</title>
+  <style type="text/css">
+    body {
+      background-color: #EAEDEF;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <img class="ui tiny centered image" src="/media/gaulogo.png">
+    <h2 class="ui blue header">
+      <div class="content">
+        Grade Manager System</br>
+
+      </div>
+    </h2>
+    <form class="ui large form">
+      <div class="ui stacked segment">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="username" placeholder="Username" id="username">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password" id="password">
+          </div>
+        </div>
+        <div class="ui fluid large blue submit button" id="signin" >Login</div>
+      </div>
+
+      <div class="ui error message"></div>
+
+    </form>
+  </div>
+</div>
+
+</body>
+
+</html>
